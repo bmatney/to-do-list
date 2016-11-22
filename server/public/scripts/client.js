@@ -2,13 +2,13 @@ $(document).ready(function () {
     getTasks();
 
     // add a task
-    $('#task-submit').on('click', postBook);
+    $('#submitNewTask').on('click', postTask);
 
     // delete a task
-    $("#task-list").on('click', '.delete', deleteBook);
+    $("#taskList").on('click', '.delete', deleteTask);
 
     // complete a task
-    $("#task-list").on('click', '.complete', updateBook);
+    $("#taskList").on('click', '.complete', updateTask);
 
   });
 /**
@@ -19,7 +19,7 @@ function getTasks() {
     type: 'GET',
     url: '/tasks/',
     success: function (tasks) {
-      appendBooks(tasks);
+      appendTasks(tasks);
     },
 
     error: function () {
@@ -30,17 +30,13 @@ function getTasks() {
 /**
  * Add a new task to the database and refresh the DOM
  */
-function postBook() {
+function postTask() {
   event.preventDefault();
 
   var task = {};
-
-  $.each($('#newTask').serializeArray(), function (i, field) {
+  $.each($('.newTask').serializeArray(), function (i, field) {
     task[field.name] = field.value;
   });
-
-  // convert edition to integer
-  task.edition = parseInt(task.edition);
 
   console.log('task: ', task);
 
@@ -58,7 +54,7 @@ function postBook() {
   });
 }
 
-function deleteBook() {
+function deleteTask() {
   var id = $(this).parent().data('id');
   console.log(id);
 
@@ -75,7 +71,7 @@ function deleteBook() {
   });
 }
 
-function updateBook() {
+function updateTask() {
   var id = $(this).parent().data('id');
   console.log(id);
 
@@ -103,12 +99,12 @@ function updateBook() {
   });
 }
 
-function appendBooks(tasks) {
-  $("#task-list").empty();
+function appendTasks(tasks) {
+  $("#taskList").empty();
 
   for (var i = 0; i < tasks.length; i++) {
-    $("#task-list").append('<div class="row task"></div>');
-    $el = $('#task-list').children().last();
+    $("#taskList").append('<div class="row task"></div>');
+    $el = $('#taskList').children().last();
     var task = tasks[i];
     $el.data('id', task.id);
 
